@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="ecs100">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../lib/ecs100.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="https://ecs.wgtn.ac.nz/foswiki/pub/Main/JavaResources/javaAPI-102-112.html" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../lib/ecs100.jar!/" />
+    </SOURCES>
+  </library>
+</component>
