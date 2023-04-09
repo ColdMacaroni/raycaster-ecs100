@@ -7,7 +7,7 @@ public class Engine {
     Engine() {
         map = new Map();
 
-        // Using 0.5 as a starting value so the player is in the centre of a cell.
+        // Using 0.5 as a starting value so the player is in the centre of a cell.Z
         double playerStartX = 0.5;
         double playerStartY = 0.5;
 
