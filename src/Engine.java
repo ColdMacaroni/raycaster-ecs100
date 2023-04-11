@@ -52,10 +52,8 @@ public class Engine {
         for (int i = 0; i < columns; i++) {
             // 0 is far, 1 is close
             double dist = 1 - rayCaster.distances[i];
-
             // How far the halls should be drawn each way
             double height = dist * rows * cellSize;
-
             // Luminosity of the wall
             int lum = (int)(240 * dist * dist);
             UI.setColor(new Color(lum, lum, lum));
@@ -83,5 +81,9 @@ public class Engine {
 
     public Map getMap() {
         return map;
+    }
+
+    public RayCaster getRayCaster() {
+        return rayCaster;
     }
 }
