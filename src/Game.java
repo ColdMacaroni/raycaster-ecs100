@@ -4,6 +4,36 @@ import java.awt.*;
 
 public class Game {
 
+    public static void drawMiniMap(Engine engine, double cellSize, double yOffset) {
+        // Used to draw player's fov
+        double halfFOV = - engine.getRayCaster().getFov() / 2.0;
+
+        // First draw the map's walls
+        Map map = engine.getMap();
+        UI.setColor(Color.black);
+        for (int y = 0; y < map.getHeight(); y++) {
+            for (int x = 0; x < map.getWidth(); x++) {
+                // Draw a wall if there's a wall, otherwise clear the space
+                if (map.atPos(x, y) == '#')
+                    UI.setColor(Color.black);
+                else
+                    UI.setColor(Color.white);
+
+                // Flip map, I'm not sure why when drawn normally it's flipped vertically
+                // But we gotta do this if we want it to match
+                UI.fillRect(x * cellSize, yOffset + (map.getHeight() - y) * cellSize, cellSize, cellSize);
+            }
+        }
+
+        // Draw our player
+        Player player = engine.getPlayer();
+        double playerX = player.getX() * cellSize;
+
+        // Player must also be flipped to match the map
+        double playerY = yOffset + (map.getHeight() - player.getY()) * cellSize;
+        UI.setColor(Color.blue);
+        UI.fillOval(playerX, playerY, cellSize/3.0, cellSize/3.0);
+    }
 
     public static void main(String[] args) {
         System.out.println("Raycaster adapted from https://www.youtube.com/watch?v=xW8skO7MFYw");
@@ -22,8 +52,6 @@ public class Game {
 
         Engine engine = new Engine(columns, rows, cellSize);
         Player player = engine.getPlayer();
-        player.setX(4.5);
-        player.setY(4.5);
 
         // Game loop here.
         boolean running = true;
@@ -51,7 +79,6 @@ public class Game {
             double dY = Double.NaN;
 
             // Move forwards and backwards
-            // These aren't working
             if (mouseHandler.mouseY < centreY - mouseDeadZone) {
                 dX = Math.sin(player.getLookingAt()) * player.getWalkSpeed();
                 dY = Math.cos(player.getLookingAt()) * player.getWalkSpeed();
@@ -62,6 +89,7 @@ public class Game {
                 dY = -Math.cos(player.getLookingAt()) * player.getWalkSpeed();
             }
 
+            // Check that there's actually some movement
             if (!Double.isNaN(dX) && !Double.isNaN(dY)) {
                 player.addX(dX);
                 player.addY(dY);
@@ -81,6 +109,9 @@ public class Game {
             UI.drawOval(centreX - 2, centreY - 2, 4, 4);
             UI.drawOval(centreX - mouseDeadZone, centreY - mouseDeadZone, mouseDeadZone*2, mouseDeadZone*2);
 
+            // Draw minimap
+            drawMiniMap(engine, cellSize, rows * cellSize);
+
 
             // Print which direction the player is looking at
             // This is quite resource expensive, I recommend commenting out if not needed
@@ -88,10 +119,10 @@ public class Game {
             UI.print("Player facing: ");
             int a = (int)Math.round((player.getLookingAt() / (Math.PI * 2)) * 4);
             switch ((a <=0 ) ? 4 + a : a) {
-                case 4, 0 -> UI.println('E');
-                case 1 -> UI.println('N');
-                case 2 -> UI.println('W');
-                case 3 -> UI.println('S');
+                case 4, 0 -> UI.println('S');
+                case 1 -> UI.println('W');
+                case 2 -> UI.println('N');
+                case 3 -> UI.println('E');
             }
 
             // ecs100 can handle at most like 30fps
