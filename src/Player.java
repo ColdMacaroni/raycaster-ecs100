@@ -1,13 +1,12 @@
 public class Player {
     private double x;
     private double y;
-    final private double fov = Math.PI * 0.75;
 
-    private double lookingAt = 0;
+    private double lookingAt = 0.0;
 
     // How many radians per second
-    final private double lookSpeed = Math.PI/2.0;
-    final private double walkSpeed = 0.1;
+    private final double lookSpeed = 0.03;
+    private final double walkSpeed = 0.07;
 
     Player(double x, double y) {
         this.x = x;
@@ -30,17 +29,28 @@ public class Player {
         this.y = y;
     }
 
-    public double getFov() {
-        return fov;
-    }
-
     public double getLookingAt() {
         return lookingAt;
     }
 
     public void setLookingAt(double lookingAt) {
-        // Keep to one revolution
+        // Bound between 0 and 2pi
         this.lookingAt = lookingAt % (2 * Math.PI);
+
+        if (this.lookingAt <= 0 )
+            this.lookingAt = Math.PI * 2 - this.lookingAt;
+    }
+
+    public void addLookingAt(double angle) {
+        setLookingAt(lookingAt + angle);
+    }
+
+    public void addY(double n) {
+        this.y += n;
+    }
+
+    public void addX(double n) {
+        this.x += n;
     }
 
     public double getLookSpeed() {
