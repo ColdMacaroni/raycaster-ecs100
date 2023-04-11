@@ -63,7 +63,7 @@ public class RayCaster {
 
             // Store normalised distance
             // TODO! Urgent! Fix fish-eye. I have no idea how. Pull requests appreciated
-            distances[i] = dist * Math.cos(midAngle - angle) / maxDepth;
+            distances[i] = dist / maxDepth;
         }
     }
 
