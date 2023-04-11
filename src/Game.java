@@ -51,7 +51,6 @@ public class Game {
             // Print which direction the player is looking at
             // This is quite resource expensive, I recommend commenting out if not needed
             UI.clearText();
-
             UI.print("Player facing: " + getPlayerFacing(player));
 
             // ecs100 can handle at most like 30fps
@@ -104,13 +103,8 @@ public class Game {
         }
     }
     static boolean inDeadZone(double x, double y) {
-        if (y <= centreY - mouseDeadZone && y >= centreY + mouseDeadZone) {
-            return true;
-        }
-        if (x <= centreX - mouseDeadZone && x >= centreX + mouseDeadZone) {
-            return true;
-        }
-        return false;
+        return (centreX - mouseDeadZone < x && x < centreX + mouseDeadZone &&
+                centreY - mouseDeadZone < y && y < centreY + mouseDeadZone);
     }
 
     static void drawCrosshair() {
@@ -147,7 +141,7 @@ public class Game {
 
                 // Flip map, I'm not sure why when drawn normally it's flipped vertically
                 // But we gotta do this if we want it to match
-                UI.fillRect(x * cellSize, yOffset + (map.getHeight() - y) * cellSize, cellSize, cellSize);
+                UI.fillRect(x * cellSize, yOffset + (map.getHeight() - y - 1) * cellSize, cellSize, cellSize);
             }
         }
 
